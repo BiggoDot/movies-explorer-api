@@ -24,17 +24,19 @@ module.exports.deleteMovie = (req, res, next) => {
             res.send(movie);
           })
           .catch((err) => {
-            if (err.name === 'CastError') {
-              next(new BadRequestError('id is incorrect'));
-              return;
-            }
             next(err);
           });
         return;
       }
       throw new ForbiddenError('Unable to delete other users card');
     })
-    .catch((err) => next(err));
+    .catch((err) => {
+      if (err.name === 'CastError') {
+        next(new BadRequestError('id is incorrect'));
+        return;
+      }
+      next(err);
+    });
 };
 
 module.exports.createMovie = (req, res, next) => {

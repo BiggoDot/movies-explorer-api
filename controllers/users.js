@@ -67,6 +67,10 @@ module.exports.updateUserInfo = (req, res, next) => {
         next(new BadRequestError('Data is incorrect'));
         return;
       }
+      if (err.code === 11000) {
+        next(new ConflictError('User with this email already exists'));
+        return;
+      }
       next(err);
     });
 };
@@ -81,7 +85,8 @@ module.exports.login = (req, res, next) => {
     .catch((err) => {
       if (err.name === 'Error') {
         next(new UnauthorizedError('Email or password are incorrect'));
+      } else {
+        next(err);
       }
-      next(err);
     });
 };

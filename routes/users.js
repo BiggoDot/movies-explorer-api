@@ -5,8 +5,8 @@ const {
   findUserMe,
 } = require('../controllers/users');
 
-router.get('/me', findUserMe);
-router.patch('/me', celebrate({
+router.get('/users/me', findUserMe);
+router.patch('/users/me', celebrate({
   body: Joi.object().keys({
     email: Joi.string().email(),
     name: Joi.string().min(2).max(30),
